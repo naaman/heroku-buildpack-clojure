@@ -33,6 +33,7 @@ if [ "$(is_supported_java_version ${JAVA_VERSION})" = "true" ]; then
     export JAVA_VERSION="1.7"
     echo -n "-----> Installing OpenJDK ${JAVA_VERSION}..."
     export JAVA_URL_1_7="http://heroku-jvm-langpack-java.s3.amazonaws.com/test/openjdk7-u15.tar.gz"
+    export LEIN_JVM_OPTS="-Djava.library.path=$BUILD_DIR/jmagick"
     install_java ${BUILD_DIR} ${JAVA_VERSION}
     jdk_overlay ${BUILD_DIR}
     echo "done"

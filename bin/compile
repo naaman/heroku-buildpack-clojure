@@ -8,6 +8,12 @@ set -e
 BUILD_DIR=$1
 CACHE_DIR=$2
 
+
+#install jmagick
+curl --silent --location http://downloads.jmagick.org/6.4.0/jmagick-linux-6.4.0-Q32.tar.gz -O
+mkdir -p $BUILD_DIR/jmagick
+tar xzf jmagick-linux-6.4.0-Q32.tar.gz -C $BUILD_DIR/jmagick
+
 # Load common JVM functionality from https://github.com/heroku/heroku-buildpack-jvm-common
 JVM_COMMON_BUILDPACK=https://heroku-jvm-common.s3.amazonaws.com/jvm-buildpack-common.tar.gz
 curl --silent --location $JVM_COMMON_BUILDPACK | tar -x bin/java -zO > /tmp/jvm-common
@@ -24,8 +30,8 @@ fi
 
 # Install JDK
 if [ "$(is_supported_java_version ${JAVA_VERSION})" = "true" ]; then
-    echo -n "-----> Installing OpenJDK ${JAVA_VERSION}..."
     export JAVA_VERSION="1.7"
+    echo -n "-----> Installing OpenJDK ${JAVA_VERSION}..."
     export JAVA_URL_1_7="http://heroku-jvm-langpack-java.s3.amazonaws.com/test/openjdk7-u15.tar.gz"
     install_java ${BUILD_DIR} ${JAVA_VERSION}
     jdk_overlay ${BUILD_DIR}
